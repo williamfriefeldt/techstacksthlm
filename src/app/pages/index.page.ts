@@ -1,49 +1,54 @@
-import { Component } from '@angular/core';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Component, inject } from '@angular/core';
+import { Observable, Subject, repeatWhen } from 'rxjs';
+import { AddCompanyComponent } from '../components/add-company/add-company.component';
+import { BackgroundComponent } from '../components/background/background.component';
+import {
+  CompaniesComponent,
+  Company,
+} from '../components/companies/companies.component';
+import { HeaderComponent } from '../components/header/header.component';
+import { ModalComponent } from '../components/modal/modal.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   template: `
-    <div>
-      <a href="https://analogjs.org/" target="_blank">
-        <img alt="Analog Logo" class="logo analog" src="/analog.svg" />
-      </a>
-    </div>
+    <app-background />
+    <app-header />
+    <app-companies
+      [companies]="companies$ | async"
+      (onEditCompany)="companyToEdit = $event"
+    />
 
-    <h2>Analog</h2>
-
-    <h3>The fullstack meta-framework for Angular!</h3>
-
-    <div class="card">
-      <button type="button" (click)="increment()">Count {{ count }}</button>
-    </div>
-
-    <p class="read-the-docs">
-      For guides on how to customize this project, visit the
-      <a href="https://analogjs.org" target="_blank">Analog documentation</a>
-    </p>
+    <app-add-company
+      (afterAddCompany)="afterAddCompany()"
+      [companyToEdit]="companyToEdit"
+    />
   `,
-  styles: [
-    `
-      .logo {
-        will-change: filter;
-      }
-      .logo:hover {
-        filter: drop-shadow(0 0 2em #646cffaa);
-      }
-      .logo.angular:hover {
-        filter: drop-shadow(0 0 2em #42b883aa);
-      }
-      .read-the-docs {
-        color: #888;
-      }
-    `,
+  imports: [
+    BackgroundComponent,
+    HeaderComponent,
+    CompaniesComponent,
+    AsyncPipe,
+    ModalComponent,
+    NgIf,
+    AddCompanyComponent,
   ],
 })
 export default class HomeComponent {
-  count = 0;
+  private readonly http = inject(HttpClient);
 
-  increment() {
-    this.count++;
+  private readonly updateCompanies$ = new Subject<void>();
+
+  public companies$: Observable<Company[]> = this.http
+    .get<Company[]>('/api/v1/companies')
+    .pipe(repeatWhen(() => this.updateCompanies$));
+
+  public companyToEdit?: Company;
+
+  public afterAddCompany() {
+    this.updateCompanies$.next();
   }
 }
