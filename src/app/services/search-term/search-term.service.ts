@@ -10,7 +10,7 @@ export class SearchTermService {
     return this._searchTerms;
   }
 
-  public set searchTerms(searchTerm: string) {
-    this._searchTerms = searchTerm.split(' ');
+  public set searchTerms(searchTerm: string[]) {
+    this._searchTerms = searchTerm;
   }
 }

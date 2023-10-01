@@ -33,8 +33,6 @@ import { InputComponent } from '../input/input.component';
       h1 {
         margin: 0;
       }
-
-      @media (max-width: );
     `,
   ],
   imports: [InputComponent],
@@ -43,6 +41,6 @@ export class HeaderComponent {
   private readonly searchTermService = inject(SearchTermService);
 
   public onChange(searchTerm: string): void {
-    this.searchTermService.searchTerms = searchTerm;
+    this.searchTermService.searchTerms = searchTerm.split(' ');
   }
 }
