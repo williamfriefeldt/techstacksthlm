@@ -95,6 +95,12 @@ import { ModalComponent } from '../modal/modal.component';
         width: 100%;
       }
 
+      .name {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
       .half {
         width: 50%;
       }

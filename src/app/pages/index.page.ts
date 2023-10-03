@@ -19,7 +19,7 @@ import { ModalComponent } from '../components/modal/modal.component';
     <app-header />
     <app-companies
       [companies]="companies$ | async"
-      (onEditCompany)="companyToEdit = $event"
+      (onEditCompany)="onEditCompany($event)"
     />
 
     <app-add-company
@@ -50,5 +50,9 @@ export default class HomeComponent {
 
   public afterAddCompany() {
     this.updateCompanies$.next();
+  }
+
+  public onEditCompany(company: Company): void {
+    this.companyToEdit = structuredClone(company);
   }
 }
