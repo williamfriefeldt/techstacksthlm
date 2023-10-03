@@ -1,9 +1,8 @@
-import { defineEventHandler, readBody } from 'h3';
+import { defineEventHandler } from 'h3';
 import { Company } from '../../../app/components/companies/companies.component';
-import { dataBase } from '../../database/init';
 
 export default defineEventHandler(async (event): Promise<Company> => {
-  const body: Company = await readBody(event);
+  /*   const body: Company = await readBody(event);
 
   const companyExists = await dataBase
     .collection('companies')
@@ -17,5 +16,7 @@ export default defineEventHandler(async (event): Promise<Company> => {
   }
   return (
     await (await dataBase.collection('companies').add(body)).get()
-  ).data() as Company;
+  ).data() as Company; */
+
+  return { name: 'sd', techStack: ['wdqjh'] };
 });
