@@ -1,11 +1,10 @@
 {
   "functions": { "source": "dist/analog/server" },
-  "hosting": [
-    {
-      "site": "tech-stack-sthlm",
-      "public": "dist/analog/public",
-      "cleanUrls": true,
-      "rewrites": [{ "source": "**", "function": "server" }]
-    }
-  ]
+  "hosting": {
+    "site": "tech-stack-sthlm",
+    "public": "dist/analog/public",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "cleanUrls": true,
+    "rewrites": [{ "source": "**", "function": "server" }]
+  }
 }
