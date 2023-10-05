@@ -1,8 +1,17 @@
 import { NgForOf, NgIf } from '@angular/common';
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import {
+  AfterViewChecked,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  inject,
+} from '@angular/core';
+import { fold } from '../../animations/fold';
 import { FilterPipe } from '../../pipes/filter.pipe';
 import { SearchTermService } from '../../services/search-term/search-term.service';
 import { CardComponent } from '../card/card.component';
+import { CompanyComponent } from '../company/company.component';
 import { EditComponent } from '../icons/edit/edit.component';
 import { LoadingComponent } from '../loading/loading.component';
 
@@ -21,15 +30,20 @@ export interface Company {
             | filter : searchTermService.searchTerms as filteredCompanies
         "
       >
-        <app-card *ngFor="let company of filteredCompanies">
-          <div class="half name">{{ company.name }}</div>
-          <div class="half tech-stack">
-            <span *ngFor="let tech of company.techStack">
-              {{ tech }}
-            </span>
-            <app-edit (onEdit)="onEditCompany.emit(company)" />
-          </div>
-        </app-card>
+        <app-company
+          *ngFor="
+            let company of filteredCompanies;
+            trackBy: companiesTrackBy;
+            let i = index
+          "
+          [@fold]="{
+            value: '',
+            params: { delay: firstRender ? 0.05 * i : 0 + 's' }
+          }"
+          [company]="company"
+          [hasEdit]="true"
+          (onEditCompany)="onEditCompany.emit($event)"
+        ></app-company>
 
         <div class="no-companies" *ngIf="!filteredCompanies.length">
           No companies with that tech stack...
@@ -47,6 +61,7 @@ export interface Company {
     FilterPipe,
     LoadingComponent,
     EditComponent,
+    CompanyComponent,
   ],
   styles: [
     `
@@ -56,36 +71,6 @@ export interface Company {
         margin-bottom: 50px;
       }
 
-      .half {
-        width: 50%;
-      }
-
-      .name {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-      }
-
-      @media (max-width: 768px) {
-        .half {
-          width: 100%;
-        }
-
-        .name {
-          font-weight: bold;
-        }
-      }
-
-      .tech-stack {
-        display: flex;
-        justify-content: end;
-        flex-wrap: wrap;
-      }
-
-      .tech-stack span {
-        margin-right: 10px;
-      }
-
       .no-companies {
         text-align: center;
         color: #fd5d93;
@@ -93,12 +78,23 @@ export interface Company {
       }
     `,
   ],
+  animations: [fold],
 })
-export class CompaniesComponent {
+export class CompaniesComponent implements AfterViewChecked {
   public readonly searchTermService = inject(SearchTermService);
 
-  @Input() companies: Company[] | null = null;
+  public firstRender: boolean = true;
+
+  @Input({ required: true }) public companies: Company[] | null = null;
 
   @Output() public readonly onEditCompany: EventEmitter<Company> =
     new EventEmitter<Company>();
+
+  public companiesTrackBy(_index: number, { name }: Company): string {
+    return name;
+  }
+
+  public ngAfterViewChecked(): void {
+    this.firstRender = false;
+  }
 }

@@ -4,14 +4,16 @@ import { InputComponent } from '../input/input.component';
 
 @Component({
   selector: 'app-header',
-  template: ` <div class="container">
-    <h1 class="center">tech stack sthlm</h1>
-    <app-input
-      (change)="onChange($event)"
-      [autoFocus]="true"
-      placeholder="Search company or tech..."
-    />
-  </div>`,
+  template: `
+    <div class="container">
+      <h1 class="center">tech stack sthlm</h1>
+      <app-input
+        (change)="onChange($event)"
+        [autoFocus]="true"
+        placeholder="Search company or tech..."
+      />
+    </div>
+  `,
   standalone: true,
   styles: [
     `
@@ -38,7 +40,8 @@ import { InputComponent } from '../input/input.component';
   imports: [InputComponent],
 })
 export class HeaderComponent {
-  private readonly searchTermService = inject(SearchTermService);
+  private readonly searchTermService: SearchTermService =
+    inject(SearchTermService);
 
   public onChange(searchTerm: string): void {
     this.searchTermService.searchTerms = searchTerm.split(' ');

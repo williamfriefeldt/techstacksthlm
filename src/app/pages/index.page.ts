@@ -9,6 +9,7 @@ import {
   Company,
 } from '../components/companies/companies.component';
 import { HeaderComponent } from '../components/header/header.component';
+import { InfoComponent } from '../components/icons/info/info.component';
 import { ModalComponent } from '../components/modal/modal.component';
 
 @Component({
@@ -26,6 +27,8 @@ import { ModalComponent } from '../components/modal/modal.component';
       (afterAddCompany)="afterAddCompany()"
       [companyToEdit]="companyToEdit"
     />
+
+    <app-info />
   `,
   imports: [
     BackgroundComponent,
@@ -35,24 +38,25 @@ import { ModalComponent } from '../components/modal/modal.component';
     ModalComponent,
     NgIf,
     AddCompanyComponent,
+    InfoComponent,
   ],
 })
 export default class HomeComponent {
-  private readonly http = inject(HttpClient);
+  private readonly http: HttpClient = inject(HttpClient);
 
-  private readonly updateCompanies$ = new Subject<void>();
+  private readonly updateCompanies$: Subject<void> = new Subject<void>();
 
   public companies$: Observable<Company[]> = this.http
     .get<Company[]>('/api/v1/companies')
-    .pipe(repeatWhen(() => this.updateCompanies$));
+    .pipe(repeatWhen((): Subject<void> => this.updateCompanies$));
 
   public companyToEdit?: Company;
 
-  public afterAddCompany() {
+  public afterAddCompany(): void {
     this.updateCompanies$.next();
   }
 
   public onEditCompany(company: Company): void {
-    this.companyToEdit = structuredClone(company);
+    this.companyToEdit = structuredClone<Company>(company);
   }
 }

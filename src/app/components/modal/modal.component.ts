@@ -45,5 +45,6 @@ import { Component, EventEmitter, Output } from '@angular/core';
   ],
 })
 export class ModalComponent {
-  @Output() onCloseModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() public readonly onCloseModal: EventEmitter<boolean> =
+    new EventEmitter<boolean>();
 }

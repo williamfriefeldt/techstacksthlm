@@ -16,6 +16,7 @@ export class FilterPipe extends Pipe {
         );
       });
     }
+
     return [];
   }
 }

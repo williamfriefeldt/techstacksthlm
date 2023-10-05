@@ -1,7 +1,7 @@
-import { mergeApplicationConfig, ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, mergeApplicationConfig } from '@angular/core';
 import {
-  provideServerRendering,
   ɵSERVER_CONTEXT as SERVER_CONTEXT,
+  provideServerRendering,
 } from '@angular/platform-server';
 import { appConfig } from './app.config';
 
@@ -12,4 +12,7 @@ const serverConfig: ApplicationConfig = {
   ],
 };
 
-export const config = mergeApplicationConfig(appConfig, serverConfig);
+export const config: ApplicationConfig = mergeApplicationConfig(
+  appConfig,
+  serverConfig
+);

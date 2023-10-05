@@ -1,3 +1,4 @@
+import { NgForOf } from '@angular/common';
 import { Component } from '@angular/core';
 
 @Component({
@@ -5,11 +6,10 @@ import { Component } from '@angular/core';
   standalone: true,
   template: `
     <div class="container">
-      <div class="square square-1"></div>
-      <div class="square square-2"></div>
-      <div class="square square-3"></div>
-      <div class="square square-4"></div>
-      <div class="square square-5"></div>
+      <div
+        *ngFor="let i of [1, 2, 3, 4, 5]"
+        [class]="'square square-' + i"
+      ></div>
     </div>
   `,
   styles: [
@@ -84,5 +84,6 @@ import { Component } from '@angular/core';
       }
     `,
   ],
+  imports: [NgForOf],
 })
 export class BackgroundComponent {}

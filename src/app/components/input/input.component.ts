@@ -29,25 +29,27 @@ import { FormsModule } from '@angular/forms';
         outline: none;
         background: transparent;
         padding: 5px 10px;
-        border: 2px solid #301934;
+        border: 2px solid #fd5d93;
         border-radius: 20px;
         color: whitesmoke;
       }
 
       input::placeholder {
-        color: #301934;
+        color: #fd5d93;
       }
     `,
   ],
 })
 export class InputComponent implements AfterViewInit {
   @Input() public model!: string;
-  @Input() autoFocus: boolean = false;
-  @Input({ required: true }) placeholder!: string;
+  @Input({ required: true }) public placeholder!: string;
 
-  @Output() change: EventEmitter<string> = new EventEmitter<string>();
+  @Input() public autoFocus: boolean = false;
 
-  @ViewChild('input') input!: ElementRef<HTMLInputElement>;
+  @Output() public readonly change: EventEmitter<string> =
+    new EventEmitter<string>();
+
+  @ViewChild('input') public readonly input!: ElementRef<HTMLInputElement>;
 
   public ngAfterViewInit(): void {
     const input: HTMLInputElement = this.input!.nativeElement;
