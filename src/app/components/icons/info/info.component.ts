@@ -15,7 +15,7 @@ import { fold } from '../../../animations/fold';
       <ng-template #info>
         <div class="links">
           <div
-            *ngForOf="let item of info; let i = index"
+            *ngFor="let item of information; let i = index"
             [@fold]="{ value: '', params: { delay: i * 0.05 + 's' } }"
             class="row"
           >
@@ -23,7 +23,7 @@ import { fold } from '../../../animations/fold';
             <a [href]="item.link" target="_blank">
               <img
                 [class]="item.img + '-img'"
-                [src]="'/' + item.linkedin + '.png'"
+                [src]="'/' + item.img + '.png'"
               />
             </a>
           </div>
@@ -83,7 +83,7 @@ import { fold } from '../../../animations/fold';
 export class InfoComponent {
   public isOpen: boolean = false;
 
-  public info = [
+  public information = [
     {
       text: 'Built by William',
       link: 'https://www.linkedin.com/in/william-friefeldt/',
