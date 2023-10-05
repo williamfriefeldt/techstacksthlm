@@ -9,6 +9,8 @@ import { fold } from '../../../animations/fold';
       class="container"
       (mouseenter)="isOpen = true"
       (mouseleave)="isOpen = false"
+      (touchstart)="isOpen = true"
+      (touchend)="isOpen = false"
     >
       <ng-container *ngIf="!isOpen; else info">i</ng-container>
 
@@ -43,7 +45,7 @@ import { fold } from '../../../animations/fold';
         bottom: 20px;
         left: 20px;
         font-size: 20px;
-        padding: 10px 15px;
+        padding: 5px 10px;
       }
 
       .links {
