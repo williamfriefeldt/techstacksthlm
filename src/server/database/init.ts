@@ -6,7 +6,7 @@ import {
 } from 'firebase-admin/app';
 import { getFirestore, type Firestore } from 'firebase-admin/firestore';
 
-const keyString = <string>process.env['FIREBASE_SERVICE_ACCOUNT_KEY_JSON'];
+const keyString = <string>process.env['FB_SERVICE_ACCOUNT_KEY_JSON'];
 const key: Object = JSON.parse(keyString);
 const credential: Credential = cert(key);
 

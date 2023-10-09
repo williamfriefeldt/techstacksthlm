@@ -1,17 +1,11 @@
 import { NgForOf, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ElementRef, HostListener, inject } from '@angular/core';
 import { fold } from '../../../animations/fold';
 
 @Component({
   selector: 'app-info',
   template: `
-    <div
-      class="container"
-      (mouseenter)="isOpen = true"
-      (mouseleave)="isOpen = false"
-      (touchstart)="isOpen = true"
-      (touchend)="isOpen = false"
-    >
+    <div class="container" (click)="isOpen = true">
       <ng-container *ngIf="!isOpen; else info">i</ng-container>
 
       <ng-template #info>
@@ -98,4 +92,13 @@ export class InfoComponent {
       img: 'github',
     },
   ] as const;
+
+  private readonly element: ElementRef = inject(ElementRef);
+
+  @HostListener('document:mousedown', ['$event'])
+  onGlobalClick(event: MouseEvent): void {
+    if (!this.element.nativeElement.contains(event.target)) {
+      this.isOpen = false;
+    }
+  }
 }
