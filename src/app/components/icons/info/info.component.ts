@@ -13,10 +13,10 @@ import { fold } from '../../../animations/fold';
           <div
             *ngFor="let item of information; let i = index"
             [@fold]="{ value: '', params: { delay: i * 0.05 + 's' } }"
-            class="row"
           >
-            <div>{{ item.text }}</div>
             <a [href]="item.link" target="_blank">
+              <span>{{ item.text }}</span>
+
               <img
                 [class]="item.img + '-img'"
                 [src]="'/' + item.img + '.png'"
@@ -40,6 +40,12 @@ import { fold } from '../../../animations/fold';
         left: 20px;
         font-size: 20px;
         padding: 5px 10px;
+        cursor: pointer;
+        transition: transform 0.15s ease-in;
+      }
+
+      .container:hover {
+        transform: scale(1.05);
       }
 
       .links {
@@ -48,6 +54,12 @@ import { fold } from '../../../animations/fold';
 
       a {
         transition: transform 0.15s ease-in;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        text-decoration: none;
+        color: #fd5d93;
+        gap: 5px;
       }
 
       a:hover {
@@ -63,13 +75,6 @@ import { fold } from '../../../animations/fold';
         width: 22.5px;
         border-radius: 4px;
         margin-right: 5px;
-      }
-
-      .row {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        justify-content: space-between;
       }
     `,
   ],

@@ -7,7 +7,7 @@ import { EditComponent } from '../icons/edit/edit.component';
 @Component({
   selector: 'app-company',
   template: `
-    <app-card class="container">
+    <app-card>
       <div class="half name">{{ company.name }}</div>
       <div class="half tech-stack">
         <span *ngFor="let tech of company.techStack">
@@ -21,12 +21,6 @@ import { EditComponent } from '../icons/edit/edit.component';
   imports: [CardComponent, NgForOf, NgIf, EditComponent],
   styles: [
     `
-      .container {
-        display: grid;
-        gap: 15px;
-        width: 100%;
-      }
-
       .name {
         text-overflow: ellipsis;
         overflow: hidden;

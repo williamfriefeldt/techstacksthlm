@@ -66,8 +66,6 @@ export interface Company {
   styles: [
     `
       .container {
-        display: grid;
-        gap: 15px;
         margin-bottom: 50px;
       }
 

@@ -19,6 +19,7 @@ import { Component } from '@angular/core';
         display: flex;
         box-sizing: border-box;
         width: 100%;
+        margin-bottom: 10px;
       }
 
       @media (max-width: 768px) {
