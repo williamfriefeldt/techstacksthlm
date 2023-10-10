@@ -47,3 +47,6 @@ Thumbs.db
 ui-debug.log
 firebase-debug.log
 
+# Vercel
+/.vercel
+
