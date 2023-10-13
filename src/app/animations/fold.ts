@@ -16,9 +16,7 @@ export const fold: AnimationMetadata = trigger('fold', [
         style({ maxHeight: '999px', opacity: 1 })
       ),
     ],
-    {
-      params: { delay: '0s' },
-    }
+    { params: { delay: '0s' } }
   ),
   transition(':leave', [
     style({ height: '100%', maxHeight: '999px' }),

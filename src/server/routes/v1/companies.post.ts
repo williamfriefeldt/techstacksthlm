@@ -1,14 +1,10 @@
-import {
-  DocumentData,
-  DocumentReference,
-  DocumentSnapshot,
-  QuerySnapshot,
-} from 'firebase-admin/firestore';
+import { DocumentData, QuerySnapshot } from 'firebase-admin/firestore';
 import { defineEventHandler, readBody } from 'h3';
-import { Company } from '../../../app/components/companies/companies.component';
+import { Company } from '../../../app/shared/entities';
 import { dataBase } from '../../database/init';
+import { getAllCompanies } from './companies.get';
 
-export default defineEventHandler(async (event): Promise<Company> => {
+export default defineEventHandler(async (event): Promise<Company[]> => {
   const body: Company = await readBody(event);
 
   const companyExists: QuerySnapshot<DocumentData> = await dataBase
@@ -19,14 +15,10 @@ export default defineEventHandler(async (event): Promise<Company> => {
   if (companyExists.docs[0]) {
     const docsId: string = companyExists.docs[0].id;
     await dataBase.collection('companies').doc(docsId).set(body);
-    return body;
+    return await getAllCompanies();
   }
 
-  const addCompanyRef: DocumentReference<DocumentData> = await dataBase
-    .collection('companies')
-    .add(body);
+  await dataBase.collection('companies').add(body);
 
-  const company: DocumentSnapshot<DocumentData> = await addCompanyRef.get();
-
-  return <Company>company.data();
+  return await getAllCompanies();
 });

@@ -1,7 +1,7 @@
 import { NgForOf, NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Company } from '../../shared/entities';
 import { CardComponent } from '../card/card.component';
-import { Company } from '../companies/companies.component';
 import { EditComponent } from '../icons/edit/edit.component';
 
 @Component({

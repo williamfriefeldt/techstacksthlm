@@ -17,6 +17,7 @@ import { FormsModule } from '@angular/forms';
       (ngModelChange)="change.emit(model)"
       #input
       [placeholder]="placeholder"
+      [disabled]="disabled"
     />
   `,
   standalone: true,
@@ -37,6 +38,10 @@ import { FormsModule } from '@angular/forms';
       input::placeholder {
         color: #fd5d93;
       }
+
+      input:disabled {
+        opacity: 0.5;
+      }
     `,
   ],
 })
@@ -45,6 +50,7 @@ export class InputComponent implements AfterViewInit {
   @Input({ required: true }) public placeholder!: string;
 
   @Input() public autoFocus: boolean = false;
+  @Input() public disabled: boolean = false;
 
   @Output() public readonly change: EventEmitter<string> =
     new EventEmitter<string>();

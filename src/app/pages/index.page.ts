@@ -1,16 +1,25 @@
+import { injectLoad } from '@analogjs/router';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
-import { Observable, Subject, repeatWhen } from 'rxjs';
+import {
+  ChangeDetectorRef,
+  Component,
+  Signal,
+  WritableSignal,
+  inject,
+  signal,
+} from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { Observable, firstValueFrom } from 'rxjs';
 import { AddCompanyComponent } from '../components/add-company/add-company.component';
 import { BackgroundComponent } from '../components/background/background.component';
-import {
-  CompaniesComponent,
-  Company,
-} from '../components/companies/companies.component';
+import { CompaniesComponent } from '../components/companies/companies.component';
 import { HeaderComponent } from '../components/header/header.component';
 import { InfoComponent } from '../components/icons/info/info.component';
 import { ModalComponent } from '../components/modal/modal.component';
+import endpoints from '../shared/endpoints';
+import { Company } from '../shared/entities';
+import { load } from './index.server';
 
 @Component({
   selector: 'app-home',
@@ -18,13 +27,14 @@ import { ModalComponent } from '../components/modal/modal.component';
   template: `
     <app-background />
     <app-header />
+
     <app-companies
-      [companies]="companies$ | async"
+      [companies]="companies()"
       (onEditCompany)="onEditCompany($event)"
     />
 
     <app-add-company
-      (afterAddCompany)="afterAddCompany()"
+      (addCompany)="addCompany($event)"
       [companyToEdit]="companyToEdit"
     />
 
@@ -43,17 +53,27 @@ import { ModalComponent } from '../components/modal/modal.component';
 })
 export default class HomeComponent {
   private readonly http: HttpClient = inject(HttpClient);
+  private readonly change: ChangeDetectorRef = inject(ChangeDetectorRef);
 
-  private readonly updateCompanies$: Subject<void> = new Subject<void>();
+  private readonly initCompanies: Signal<Company[]> = toSignal(
+    injectLoad<typeof load>(),
+    { requireSync: true }
+  );
 
-  public companies$: Observable<Company[]> = this.http
-    .get<Company[]>('/api/v1/companies')
-    .pipe(repeatWhen((): Subject<void> => this.updateCompanies$));
-
+  public readonly companies: WritableSignal<Company[]> = signal(
+    this.initCompanies()
+  );
   public companyToEdit?: Company;
 
-  public afterAddCompany(): void {
-    this.updateCompanies$.next();
+  public async addCompany(company: Company): Promise<void> {
+    const request: Observable<Company[]> = this.http.post<Company[]>(
+      endpoints.companies,
+      company
+    );
+    const newCompanies: Company[] = await firstValueFrom(request);
+
+    this.companies.set(newCompanies);
+    this.change.detectChanges();
   }
 
   public onEditCompany(company: Company): void {

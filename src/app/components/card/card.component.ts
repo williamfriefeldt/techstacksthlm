@@ -8,7 +8,6 @@ import { Component } from '@angular/core';
     </div>
   `,
   standalone: true,
-  imports: [],
   styles: [
     `
       .card {
