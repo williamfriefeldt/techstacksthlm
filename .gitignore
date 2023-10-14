@@ -42,11 +42,6 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# Firebase
-/.firebase
-ui-debug.log
-firebase-debug.log
-
 # Vercel
 /.vercel
 

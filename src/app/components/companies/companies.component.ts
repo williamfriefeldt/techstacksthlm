@@ -41,6 +41,8 @@ import { LoadingComponent } from '../loading/loading.component';
           [company]="company"
           [hasEdit]="true"
           (onEditCompany)="onEditCompany.emit($event)"
+          [id]="company.name"
+          class="company"
         />
 
         <div @fold class="no-companies" *ngIf="!filteredCompanies.length">
@@ -69,6 +71,10 @@ import { LoadingComponent } from '../loading/loading.component';
         text-align: center;
         color: #fd5d93;
         font-size: 18px;
+      }
+
+      .company {
+        scroll-margin-top: 100px;
       }
     `,
   ],

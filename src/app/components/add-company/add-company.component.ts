@@ -135,5 +135,6 @@ export class AddCompanyComponent {
   public closeModal(): void {
     this.company = { name: '', techStack: [] };
     this.isModalOpen = false;
+    this.disabledName = false;
   }
 }

@@ -18,6 +18,7 @@ import { FormsModule } from '@angular/forms';
       #input
       [placeholder]="placeholder"
       [disabled]="disabled"
+      autocomplete="disabled"
     />
   `,
   standalone: true,

@@ -44,6 +44,8 @@ export class HeaderComponent {
     inject(SearchTermService);
 
   public onChange(searchTerm: string): void {
-    this.searchTermService.searchTerms = searchTerm.split(' ');
+    if (typeof searchTerm === 'string') {
+      this.searchTermService.searchTerms = searchTerm.split(' ');
+    }
   }
 }

@@ -19,6 +19,7 @@ import { InfoComponent } from '../components/icons/info/info.component';
 import { ModalComponent } from '../components/modal/modal.component';
 import endpoints from '../shared/endpoints';
 import { Company } from '../shared/entities';
+import { sortCompanies } from '../shared/sort';
 import { load } from './index.server';
 
 @Component({
@@ -66,6 +67,32 @@ export default class HomeComponent {
   public companyToEdit?: Company;
 
   public async addCompany(company: Company): Promise<void> {
+    const companyIndex: number = this.companies().findIndex(
+      ({ name }: Company) => name === company.name
+    );
+
+    if (companyIndex < 0) {
+      const companies = [...this.companies(), company];
+      sortCompanies(companies);
+      this.companies.set(companies);
+    } else {
+      this.companies.mutate((companies) => {
+        companies[companyIndex].techStack = company.techStack;
+      });
+    }
+
+    this.change.detectChanges();
+
+    const companyElement: HTMLElement | null = document.getElementById(
+      company.name
+    );
+
+    if (companyElement) {
+      companyElement.scrollIntoView({
+        behavior: 'smooth',
+      });
+    }
+
     const request: Observable<Company[]> = this.http.post<Company[]>(
       endpoints.companies,
       company
