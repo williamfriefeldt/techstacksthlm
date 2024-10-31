@@ -34,10 +34,6 @@ import { LoadingComponent } from '../loading/loading.component';
             trackBy: companiesTrackBy;
             let i = index
           "
-          [@fold]="{
-            value: '',
-            params: { delay: (firstRender() ? 0.05 * i : 0) + 's' }
-          }"
           [company]="company"
           [hasEdit]="true"
           (onEditCompany)="onEditCompany.emit($event)"
